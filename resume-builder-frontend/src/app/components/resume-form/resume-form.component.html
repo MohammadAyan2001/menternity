@@ -1,0 +1,167 @@
+<form [formGroup]="resumeForm" (ngSubmit)="onSubmit()">
+
+  <label>Full Name*</label>
+  <input formControlName="fullName" />
+  <div *ngIf="submitted && resumeForm.controls.fullName.errors" class="error">
+    Full Name is required.
+  </div>
+
+  <label>Email*</label>
+  <input formControlName="email" />
+  <div *ngIf="submitted && resumeForm.controls.email.errors" class="error">
+    Enter a valid email.
+  </div>
+
+  <label>Phone*</label>
+  <input formControlName="phone" />
+  <div *ngIf="submitted && resumeForm.controls.phone.errors" class="error">
+    Phone is required.
+  </div>
+
+  <label>City</label>
+  <input formControlName="city" />
+
+  <label>State</label>
+  <input formControlName="state" />
+
+  <label>LinkedIn</label>
+<input formControlName="linkedin" placeholder="https://linkedin.com/in/username" />
+
+<label>GitHub</label>
+<input formControlName="github" placeholder="https://github.com/username" />
+
+  <label>Summary</label>
+  <textarea formControlName="summary"></textarea>
+
+  <!-- Skills -->
+  <div formArrayName="skills">
+    <label>Skills</label>
+    <div *ngFor="let skill of skills.controls; let i = index">
+      <input [formControlName]="i" />
+      <button type="button" (click)="removeSkill(i)" *ngIf="skills.length > 1">Remove</button>
+    </div>
+    <button type="button" (click)="addSkill()">Add Skill</button>
+  </div>
+
+  <!-- Soft Skills -->
+  <div formArrayName="softSkills">
+    <label>Soft Skills</label>
+    <div *ngFor="let softSkill of softSkills.controls; let i = index">
+      <input [formControlName]="i" />
+      <button type="button" (click)="removeSoftSkill(i)" *ngIf="softSkills.length > 1">Remove</button>
+    </div>
+    <button type="button" (click)="addSoftSkill()">Add Soft Skill</button>
+  </div>
+
+  <!-- Achievements -->
+  <div formArrayName="achievements">
+    <label>Achievements</label>
+    <div *ngFor="let ach of achievements.controls; let i = index">
+      <input [formControlName]="i" />
+      <button type="button" (click)="removeAchievement(i)" *ngIf="achievements.length > 1">Remove</button>
+    </div>
+    <button type="button" (click)="addAchievement()">Add Achievement</button>
+  </div>
+
+  <!-- Education -->
+  <div formArrayName="education">
+    <label>Education</label>
+    <div
+      *ngFor="let edu of education.controls; let i = index"
+      [formGroupName]="i"
+      style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;"
+    >
+      <input placeholder="Degree" formControlName="degree" />
+      <input placeholder="Field of Study" formControlName="fieldOfStudy" />
+      <input placeholder="Institution" formControlName="institution" />
+      <input placeholder="Start Date" formControlName="startDate" />
+      <input placeholder="End Date" formControlName="endDate" />
+      <input placeholder="Grade" formControlName="grade" />
+      <button type="button" (click)="removeEducation(i)">Remove Education</button>
+    </div>
+    <button type="button" (click)="addEducation()">Add Education</button>
+  </div>
+
+  <!-- Experience -->
+  <div formArrayName="experience">
+    <label>Experience</label>
+    <div
+      *ngFor="let exp of experience.controls; let i = index"
+      [formGroupName]="i"
+      style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;"
+    >
+      <input placeholder="Job Title" formControlName="jobTitle" />
+      <input placeholder="Company Name" formControlName="companyName" />
+      <input placeholder="Location" formControlName="location" />
+      <input placeholder="Start Date" formControlName="startDate" />
+      <input placeholder="End Date" formControlName="endDate" />
+
+      <!-- Responsibilities -->
+      <div formArrayName="responsibilities">
+        <label>Responsibilities</label>
+        <div *ngFor="let resp of responsibilities(i).controls; let j = index">
+          <input [formControlName]="j" />
+          <button
+            type="button"
+            (click)="removeResponsibility(i, j)"
+            *ngIf="responsibilities(i).length > 1"
+          >
+            Remove
+          </button>
+        </div>
+        <button type="button" (click)="addResponsibility(i)">Add Responsibility</button>
+      </div>
+
+      <button type="button" (click)="removeExperience(i)">Remove Experience</button>
+    </div>
+    <button type="button" (click)="addExperience()">Add Experience</button>
+  </div>
+
+  <!-- Projects -->
+  <div formArrayName="projects">
+    <label>Projects</label>
+    <div
+      *ngFor="let proj of projects.controls; let i = index"
+      [formGroupName]="i"
+      style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;"
+    >
+      <input placeholder="Title" formControlName="title" />
+      <textarea placeholder="Description" formControlName="description"></textarea>
+
+      <!-- Technologies -->
+      <div formArrayName="technologies">
+        <label>Technologies</label>
+        <div *ngFor="let tech of technologies(i).controls; let j = index">
+          <input [formControlName]="j" />
+          <button
+            type="button"
+            (click)="removeTechnology(i, j)"
+            *ngIf="technologies(i).length > 1"
+          >
+            Remove
+          </button>
+        </div>
+        <button type="button" (click)="addTechnology(i)">Add Technology</button>
+      </div>
+
+      <input placeholder="Project Link" formControlName="link" />
+
+      <button type="button" (click)="removeProject(i)">Remove Project</button>
+    </div>
+    <button type="button" (click)="addProject()">Add Project</button>
+  </div>
+
+  <label for="template">Choose Template:</label>
+  <select id="template" formControlName="template">
+    <option value="classic">Classic</option>
+    <option value="modern">Modern</option>
+    <option value="elegant">Elegant</option>
+  </select>
+
+  <button type="submit">Create Resume</button>
+
+  <!-- Download Button shown only if resumeId exists -->
+  <button type="button" *ngIf="resumeId" (click)="downloadPdf()">
+    Download PDF
+  </button>
+</form>

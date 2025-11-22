@@ -1,0 +1,66 @@
+<div class="mock-container">
+  <h2>Book a Mock Interview</h2>
+
+  <form (ngSubmit)="bookInterview()" #bookingForm="ngForm">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="formData.email"
+        required
+        placeholder="Enter your email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="stack">Select Developer Role</label>
+      <select
+        id="stack"
+        name="stack"
+        [(ngModel)]="formData.stack"
+        (change)="onStackChange()"
+        required
+      >
+        <option value="" disabled selected>Select Stack</option>
+        <option value="JAVA">Java Developer</option>
+        <option value="MERN">MERN Developer</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="level">Select Interview Level</label>
+      <select
+        id="level"
+        name="level"
+        [(ngModel)]="formData.level"
+        required
+      >
+        <option value="" disabled selected>Select Level</option>
+        <option value="LEVEL_1">Level 1</option>
+        <option value="LEVEL_2">Level 2</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="availableSlots.length > 0">
+      <label for="slot">Available Slots</label>
+      <select
+        id="slot"
+        name="slot"
+        [(ngModel)]="formData.slot"
+        (change)="onSlotChange()"
+        required
+      >
+        <option value="" disabled selected>Select Slot</option>
+        <option *ngFor="let slot of availableSlots" [value]="slot">
+          {{ slot }}
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="bookingForm.invalid">
+      Book Now
+    </button>
+  </form>
+</div>
